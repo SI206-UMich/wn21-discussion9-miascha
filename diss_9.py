@@ -6,16 +6,25 @@ import unittest
 # Task 1: Get the URL that links to the Pokemon Charmander's webpage.
 # HINT: You will have to add https://pokemondb.net to the URL retrieved using BeautifulSoup
 def getCharmanderLink(soup):
-    url = https://pokemondb.net
-    r = requests.get(url)
-    soup = BeautifulSoup(r.text, 'html.parser')
+    anchor = soup.find('div', class_ = 'infocard-list infocard-list-pkmn-lg')
+    anchor2 = anchor.find_all('span', class_ = 'infocard-lg-img')[3]
+    anchor3 = anchor2.find('a')['href']
+    return 'https://pokemondb.net' + anchor3
 
 # Task 2: Get the details from the box below "Egg moves". Get all the move names and store
 #         them into a list. The function should return that list of moves.
 def getEggMoves(pokemon):
     url = 'https://pokemondb.net/pokedex/' + pokemon
-    #add code here
-
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    egg_moves = []
+    anch = soup.find('table', class_ = 'data-table')
+    anch2 = anch.find_all('tr', class_ = 'cell-name')
+    for elem in anch2:
+        anch3 = anch2.find_all('a', class_ = 'ent-name')
+        egg_moves.append(elem.text)
+    return egg_moves
+    
 # Task 3: Create a regex expression that will find all the times that have these formats: @2pm @5 pm @10am
 # Return a list of these times without the '@' symbol. E.g. ['2pm', '5 pm', '10am']
 def findLetters(sentences):
@@ -23,19 +32,20 @@ def findLetters(sentences):
     ls = []
 
     # define the regular expression
-    regex =
+    regex = '[@](\d[\w|\s][a|p]m)'
 
     # loop through each sentence or phrase in sentences
-    
+    for sentence in sentences:
 
     # find all the words that match the regular expression in each sentence
-       
+        x = re.findall(regex, sentence)
 
     # loop through the found words and add the words to your empty list
-
+        for word in x:
+            ls.append(word)
 
     #return the list of the last letter of all words that begin or end with a capital letter
-
+    return ls
 
 
 def main():
